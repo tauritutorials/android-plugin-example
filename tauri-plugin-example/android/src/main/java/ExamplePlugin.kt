@@ -7,9 +7,15 @@ import app.tauri.annotation.TauriPlugin
 import app.tauri.plugin.JSObject
 import app.tauri.plugin.Plugin
 import app.tauri.plugin.Invoke
+import android.widget.Toast
 
 @InvokeArg
 class PingArgs {
+  var value: String? = null
+}
+
+@InvokeArg
+class ToastArgs {
   var value: String? = null
 }
 
@@ -25,4 +31,13 @@ class ExamplePlugin(private val activity: Activity): Plugin(activity) {
         ret.put("value", implementation.pong(args.value ?: "default value :("))
         invoke.resolve(ret)
     }
+
+    @Command
+    fun toast(invoke: Invoke) {
+        val args = invoke.parseArgs(PingArgs::class.java)
+
+        Toast.makeText(activity, args.value, Toast.LENGTH_SHORT).show()
+    }
+
+
 }
